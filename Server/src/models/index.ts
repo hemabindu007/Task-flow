@@ -14,7 +14,8 @@ const syncDatabase = async () => {
 // If a table doesn't exist → create it.
 // If a table exists → compare its structure with the model definition.
 // Generate the necessary ALTER TABLE statements to make the table match the model.
-  await sequelize.sync({ alter: true });
+console.log(await sequelize.query("SELECT current_database()"));
+await sequelize.sync({ alter: true });
   console.log("Database connected and synced");
 };
 
