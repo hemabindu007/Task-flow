@@ -12,6 +12,9 @@ export const btnPrimaryClass =
 export const alertErrorClass =
   "px-3.5 py-3 rounded-xl text-sm mb-4 bg-red-50 text-red-700 border border-red-200 dark:bg-red-950/50 dark:text-red-300 dark:border-red-800";
 
+export const alertSuccessClass =
+  "px-3.5 py-3 rounded-xl text-sm mb-4 bg-emerald-50 text-emerald-700 border border-emerald-200 dark:bg-emerald-950/50 dark:text-emerald-300 dark:border-emerald-800";
+
 export const authFooterClass =
   "text-center mt-5 text-sm text-gray-500 dark:text-gray-400";
 

@@ -1,6 +1,7 @@
 import { useState } from "react";
 import type { FormEvent } from "react";
 import { Link, useSearchParams, useNavigate } from "react-router-dom";
+import { FiCheckCircle } from "react-icons/fi";
 import AuthLayout from "../components/AuthLayout";
 import { authApi } from "../services/api";
 import {
@@ -77,8 +78,8 @@ const ResetPassword = () => {
     return (
       <AuthLayout title="Password updated">
         <div className="text-center">
-          <div className="mx-auto mb-5 flex h-16 w-16 items-center justify-center rounded-full bg-gradient-to-br from-indigo-600 to-violet-600 text-[28px] text-white">
-            ✓
+          <div className="mx-auto mb-5 flex h-16 w-16 items-center justify-center rounded-full bg-gradient-to-br from-indigo-600 to-violet-600 text-white">
+            <FiCheckCircle className="h-8 w-8" aria-hidden="true" />
           </div>
           <p className={`mb-5 ${mutedTextClass}`}>
             Your password has been reset successfully. Redirecting to sign in...

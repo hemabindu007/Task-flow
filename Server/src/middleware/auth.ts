@@ -10,6 +10,7 @@ export interface AuthRequest extends Request {
     role: UserRole;
     firstName: string;
     lastName: string;
+    status: "active" | "inactive";
   };
 }
 
@@ -32,7 +33,7 @@ export const authenticate = async (
     };
 
     const user = await User.findByPk(decoded.id, {
-      attributes: ["id", "email", "role", "firstName", "lastName"],
+      attributes: ["id", "email", "role", "firstName", "lastName", "status"],
     });
 
     if (!user) {

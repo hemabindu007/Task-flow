@@ -1,6 +1,7 @@
 import { useState } from "react";
 import type { FormEvent } from "react";
 import { Link } from "react-router-dom";
+import { MdEmail } from "react-icons/md";
 import AuthLayout from "../components/AuthLayout";
 import { authApi } from "../services/api";
 import {
@@ -45,8 +46,8 @@ const ForgotPassword = () => {
     return (
       <AuthLayout title="Check your email">
         <div className="text-center">
-          <div className="mx-auto mb-5 flex h-16 w-16 items-center justify-center rounded-full bg-gradient-to-br from-indigo-600 to-violet-600 text-[28px] text-white">
-            ✉
+          <div className="mx-auto mb-5 flex h-16 w-16 items-center justify-center rounded-full bg-gradient-to-br from-indigo-600 to-violet-600 text-white">
+            <MdEmail className="h-8 w-8" aria-hidden="true" />
           </div>
           <p className={`mb-2 leading-relaxed ${mutedTextClass}`}>
             We've sent a password reset link to

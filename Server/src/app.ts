@@ -10,6 +10,7 @@ import cors from "cors";
 import dotenv from "dotenv";
 import { syncDatabase } from "./models";
 import authRoutes from "./routes/auth.routes";
+import adminRoutes from "./routes/admin.routes";
 
 dotenv.config();
 
@@ -23,6 +24,7 @@ app.get("/", (_req, res) => {
 });
 
 app.use("/api/auth", authRoutes);
+app.use("/api/admin", adminRoutes);
 
 const PORT = process.env.PORT || 5000;
 

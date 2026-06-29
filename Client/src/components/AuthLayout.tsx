@@ -1,5 +1,6 @@
 import type { ReactNode } from "react";
 import { Link } from "react-router-dom";
+import { FiCheck } from "react-icons/fi";
 import ThemeToggle from "./ThemeToggle";
 
 interface AuthLayoutProps {
@@ -24,8 +25,8 @@ const AuthLayout = ({ children, title, subtitle }: AuthLayoutProps) => {
             to="/login"
             className="inline-flex items-center gap-2.5 text-[28px] font-bold text-gray-900 no-underline dark:text-white"
           >
-            <span className="flex h-10 w-10 items-center justify-center rounded-[10px] bg-gradient-to-br from-indigo-600 to-violet-600 text-xl text-white">
-              ✓
+            <span className="flex h-10 w-10 items-center justify-center rounded-[10px] bg-gradient-to-br from-indigo-600 to-violet-600 text-white">
+              <FiCheck className="h-6 w-6" aria-hidden="true" />
             </span>
             TaskFlow
           </Link>

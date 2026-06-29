@@ -10,7 +10,9 @@ export interface UserAttributes {
   lastName: string;
   password: string;
   role: UserRole;
+  status: "active" | "inactive";
   emailVerified: boolean;
+  forcePasswordChange: boolean;
   emailVerificationOtp: string | null;
   emailVerificationOtpExpiry: Date | null;
   resetToken: string | null;
@@ -23,7 +25,9 @@ type UserCreationAttributes = Optional<
   UserAttributes,
   | "id"
   | "role"
+  | "status"
   | "emailVerified"
+  | "forcePasswordChange"
   | "emailVerificationOtp"
   | "emailVerificationOtpExpiry"
   | "resetToken"
@@ -40,7 +44,9 @@ class User
   declare lastName: string;
   declare password: string;
   declare role: UserRole;
+  declare status: "active" | "inactive";
   declare emailVerified: boolean;
+  declare forcePasswordChange: boolean;
   declare emailVerificationOtp: string | null;
   declare emailVerificationOtpExpiry: Date | null;
   declare resetToken: string | null;
@@ -79,7 +85,17 @@ User.init(
       allowNull: false,
       defaultValue: "admin",
     },
+    status: {
+      type: DataTypes.ENUM("active", "inactive"),
+      allowNull: false,
+      defaultValue: "active",
+    },
     emailVerified: {
+      type: DataTypes.BOOLEAN,
+      allowNull: false,
+      defaultValue: false,
+    },
+    forcePasswordChange: {
       type: DataTypes.BOOLEAN,
       allowNull: false,
       defaultValue: false,

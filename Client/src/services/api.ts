@@ -15,7 +15,7 @@ api.interceptors.request.use((config) => {
   return config;
 });
 
-export type UserRole = "admin" |"employee";
+export type UserRole = "admin" | "employee";
 
 export interface User {
   id: string;
@@ -23,6 +23,7 @@ export interface User {
   firstName: string;
   lastName: string;
   role: UserRole;
+  forcePasswordChange?: boolean;
 }
 
 export interface AuthResponse {
@@ -57,6 +58,14 @@ export const authApi = {
     api.post<{ message: string }>("/auth/reset-password", { token, password }),
 
   getMe: () => api.get<{ user: User }>("/auth/me"),
+};
+
+export const adminApi = {
+  toggleEmployeeStatus: (id: string, action: "activate" | "inactivate") =>
+    api.patch<{ message: string }>(`/admin/employees/${id}/${action}`),
+
+  toggleProjectStatus: (id: string, action: "activate" | "inactivate") =>
+    api.patch<{ message: string }>(`/admin/projects/${id}/${action}`),
 };
 
 export default api;

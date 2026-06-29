@@ -39,6 +39,38 @@ export const sendPasswordResetEmail = async (
   });
 };
 
+export const sendWelcomeEmail = async (
+  firstName: string,
+  lastName: string,
+  email: string,
+  temporaryPassword: string
+) => {
+  const from = process.env.SMTP_FROM || process.env.SMTP_USER || "noreply@taskflow.com";
+  const subject = "Welcome to TaskFlow";
+  const html = `
+    <div style="font-family: Arial, sans-serif; line-height: 1.6;">
+      <h2>Welcome to TaskFlow</h2>
+      <p>Hello ${firstName} ${lastName},</p>
+      <p>Your account has been created successfully.</p>
+      <p><strong>Email:</strong> ${email}</p>
+      <p><strong>Temporary Password:</strong> ${temporaryPassword}</p>
+      <p>Please log in and change your password immediately.</p>
+      <p>Thank you.</p>
+    </div>
+  `;
+
+  if (!process.env.SMTP_USER || !process.env.SMTP_PASS) {
+    return;
+  }
+
+  await transporter.sendMail({
+    from,
+    to: email,
+    subject,
+    html,
+  });
+};
+
 export const sendVerificationEmail = async (
   email: string,
   firstName: string,
