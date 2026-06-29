@@ -2,9 +2,16 @@ import { Request, Response } from "express";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import crypto from "crypto";
-import { User } from "../models";
-import { sendPasswordResetEmail } from "../services/email.service";
+import { PendingRegistration, User } from "../models";
+import {
+  sendPasswordResetEmail,
+} from "../services/email.service";
 import { AuthRequest } from "../middleware/auth";
+import {
+  completeRegistration,
+  initiateRegistration,
+  RegistrationError,
+} from "../services/registration.service";
 
 const sanitizeUser = (user: User) => ({
   id: user.id,
@@ -16,42 +23,14 @@ const sanitizeUser = (user: User) => ({
 
 export const register = async (req: Request, res: Response) => {
   try {
-    const { email, firstName, lastName, password } = req.body;
-
-    if (!email || !firstName || !lastName || !password) {
-      res.status(400).json({ message: "All fields are required" });
-      return;
-    }
-
-    if (password.length < 6) {
-      res.status(400).json({ message: "Password must be at least 6 characters" });
-      return;
-    }
-
-    const existing = await User.findOne({ where: { email } });
-    if (existing) {
-      res.status(409).json({ message: "Email already registered" });
-      return;
-    }
-
-    const hashedPassword = await bcrypt.hash(password, 10);
-
-    const user = await User.create({
-      email,
-      firstName,
-      lastName,
-      password: hashedPassword,
-      role: "admin",
-    });
-
-    const token = jwt.sign(
-      { id: user.id },
-      process.env.JWT_SECRET || "mysecret",
-      { expiresIn: "7d" }
-    );
-
-    res.status(201).json({ message: "Registration successful", token, user: sanitizeUser(user) });
+    const result = await initiateRegistration(req.body);
+    res.status(201).json(result);
   } catch (error) {
+    if (error instanceof RegistrationError) {
+      res.status(error.statusCode).json({ message: error.message });
+      return;
+    }
+
     console.error("Register error:", error);
     res.status(500).json({ message: "Server error during registration" });
   }
@@ -69,6 +48,11 @@ export const login = async (req: Request, res: Response) => {
     const user = await User.findOne({ where: { email } });
     if (!user) {
       res.status(401).json({ message: "Invalid email or password" });
+      return;
+    }
+
+    if (!user.emailVerified) {
+      res.status(403).json({ message: "Please verify your email before logging in" });
       return;
     }
 
@@ -124,6 +108,38 @@ export const forgotPassword = async (req: Request, res: Response) => {
   } catch (error) {
     console.error("Forgot password error:", error);
     res.status(500).json({ message: "Server error processing request" });
+  }
+};
+
+export const verifyEmail = async (req: Request, res: Response) => {
+  try {
+    const { email, otp } = req.body;
+    const result = await completeRegistration(email, otp);
+    res.json(result);
+  } catch (error) {
+    if (error instanceof RegistrationError) {
+      res.status(error.statusCode).json({ message: error.message });
+      return;
+    }
+
+    console.error("Verify email error:", error);
+    res.status(500).json({ message: "Server error verifying email" });
+  }
+};
+
+export const verifyRegistration = async (req: Request, res: Response) => {
+  try {
+    const { email, code } = req.body;
+    const result = await completeRegistration(email, code);
+    res.json(result);
+  } catch (error) {
+    if (error instanceof RegistrationError) {
+      res.status(error.statusCode).json({ message: error.message });
+      return;
+    }
+
+    console.error("Verify registration error:", error);
+    res.status(500).json({ message: "Server error verifying registration" });
   }
 };
 

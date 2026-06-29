@@ -18,7 +18,7 @@ interface AuthContextType {
     firstName: string;
     lastName: string;
     password: string;
-  }) => Promise<void>;
+  }) => Promise<{ message: string; email: string }>;
   logout: () => void;
 }
 
@@ -69,9 +69,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     password: string;
   }) => {
     const { data } = await authApi.register(formData);
-    localStorage.setItem("token", data.token);
-    setToken(data.token);
-    setUser(data.user);
+    return data;
   };
 
   const logout = () => {

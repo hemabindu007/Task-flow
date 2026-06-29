@@ -21,20 +21,48 @@ export const sendPasswordResetEmail = async (
   const from = process.env.SMTP_FROM || process.env.SMTP_USER || "noreply@taskflow.com";
   const templatePath = path.join(__dirname, '../../email-template/forgot-password.html');
   let emailTemplate = fs.readFileSync(templatePath, 'utf8');
-        if (!process.env.SMTP_USER || !process.env.SMTP_PASS || !emailTemplate) {
-          return;
-        }
-          let replacedTemplate = emailTemplate
-                .replace('{{firstName}}', firstName)
-                .replace('{{resetUrl}}', resetUrl)
-                .replace('{{date}}', new Date().getFullYear().toString());
-                if(!replacedTemplate){
-                  return;
-                }
-                await transporter.sendMail({
-                    from,
-                    to: email,
-                    subject: "Reset your TaskFlow password",
-                    html: replacedTemplate,
-                });
+  if (!process.env.SMTP_USER || !process.env.SMTP_PASS || !emailTemplate) {
+    return;
+  }
+  let replacedTemplate = emailTemplate
+    .replace('{{firstName}}', firstName)
+    .replace('{{resetUrl}}', resetUrl)
+    .replace('{{date}}', new Date().getFullYear().toString());
+  if (!replacedTemplate) {
+    return;
+  }
+  await transporter.sendMail({
+    from,
+    to: email,
+    subject: "Reset your TaskFlow password",
+    html: replacedTemplate,
+  });
+};
+
+export const sendVerificationEmail = async (
+  email: string,
+  firstName: string,
+  otp: string
+) => {
+  const from = process.env.SMTP_FROM || process.env.SMTP_USER || "noreply@taskflow.com";
+  const templatePath = path.join(__dirname, '../../email-template/verify-email.html');
+  let emailTemplate = fs.readFileSync(templatePath, 'utf8');
+  if (!process.env.SMTP_USER || !process.env.SMTP_PASS || !emailTemplate) {
+    return;
+  }
+  let replacedTemplate = emailTemplate
+    .replace('{{firstName}}', firstName)
+    .replace('{{otp}}', otp)
+    .replace('{{date}}', new Date().getFullYear().toString());
+  if (!replacedTemplate) {
+    return;
+  }
+  console.log("replaced:-", replacedTemplate);
+  
+  await transporter.sendMail({
+    from,
+    to: email,
+    subject: "Verify your TaskFlow email",
+    html: replacedTemplate,
+  });
 };
