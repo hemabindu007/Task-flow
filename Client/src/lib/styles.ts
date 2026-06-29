@@ -28,8 +28,6 @@ export const roleBadgeClass = (role?: UserRole) => {
   const variants: Record<UserRole, string> = {
     admin:
       "bg-violet-100 text-violet-800 dark:bg-violet-900/50 dark:text-violet-300",
-    manager:
-      "bg-blue-100 text-blue-800 dark:bg-blue-900/50 dark:text-blue-300",
     employee:
       "bg-emerald-100 text-emerald-800 dark:bg-emerald-900/50 dark:text-emerald-300",
   };

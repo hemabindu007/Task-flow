@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <style>
+    body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #f4f6f9; margin: 0; padding: 40px 20px; }
+    .container { max-width: 520px; margin: 0 auto; background: #ffffff; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 24px rgba(0,0,0,0.08); }
+    .header { background: linear-gradient(135deg, #4f46e5, #7c3aed); padding: 32px; text-align: center; }
+    .header h1 { color: #ffffff; margin: 0; font-size: 24px; }
+    .body { padding: 32px; color: #374151; line-height: 1.6; }
+    .otp { display: inline-block; margin: 24px 0; font-size: 32px; letter-spacing: 0.5em; padding: 18px 24px; background: #eef2ff; color: #312e81; border-radius: 12px; font-weight: 700; }
+    .footer { padding: 20px 32px; background: #f9fafb; color: #9ca3af; font-size: 13px; text-align: center; border-top: 1px solid #e5e7eb; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header"><h1>Verify your email</h1></div>
+    <div class="body">
+      <p>Hi {{firstName}},</p>
+      <p>Welcome to TaskFlow! Use the code below to verify your email address. This code expires in 1 hour.</p>
+      <div class="otp">{{otp}}</div>
+      <p>If you didn't create an account, you can ignore this message.</p>
+    </div>
+    <div class="footer">&copy; {{date}} TaskFlow. All rights reserved.</div>
+  </div>
+</body>
+</html>

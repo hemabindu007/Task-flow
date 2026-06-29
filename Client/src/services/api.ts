@@ -15,7 +15,7 @@ api.interceptors.request.use((config) => {
   return config;
 });
 
-export type UserRole = "admin" | "manager" | "employee";
+export type UserRole = "admin" |"employee";
 
 export interface User {
   id: string;
@@ -31,13 +31,21 @@ export interface AuthResponse {
   user: User;
 }
 
+export interface RegisterResponse {
+  message: string;
+  email: string;
+}
+
 export const authApi = {
   register: (data: {
     email: string;
     firstName: string;
     lastName: string;
     password: string;
-  }) => api.post<AuthResponse>("/auth/register", data),
+  }) => api.post<RegisterResponse>("/auth/register", data),
+
+  verifyEmail: (email: string, otp: string) =>
+    api.post<AuthResponse>("/auth/verify-registration", { email, code: otp }),
 
   login: (data: { email: string; password: string }) =>
     api.post<AuthResponse>("/auth/login", data),

@@ -46,13 +46,13 @@ const Register = () => {
 
     setLoading(true);
     try {
-      await register({
+      const data = await register({
         email: form.email,
         firstName: form.firstName,
         lastName: form.lastName,
         password: form.password,
       });
-      navigate("/dashboard");
+      navigate(`/verify-email?email=${encodeURIComponent(data.email)}`);
     } catch (err) {
       if (axios.isAxiosError(err)) {
         setError(err.response?.data?.message || "Registration failed");

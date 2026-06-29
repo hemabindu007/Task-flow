@@ -1,7 +1,7 @@
 import { DataTypes, Model, Optional } from "sequelize";
 import sequelize from "../config/database";
 
-export type UserRole = "admin" | "manager" | "employee";
+export type UserRole = "admin" | "employee";
 
 export interface UserAttributes {
   id: string;
@@ -10,6 +10,9 @@ export interface UserAttributes {
   lastName: string;
   password: string;
   role: UserRole;
+  emailVerified: boolean;
+  emailVerificationOtp: string | null;
+  emailVerificationOtpExpiry: Date | null;
   resetToken: string | null;
   resetTokenExpiry: Date | null;
   createdAt?: Date;
@@ -18,7 +21,13 @@ export interface UserAttributes {
 
 type UserCreationAttributes = Optional<
   UserAttributes,
-  "id" | "role" | "resetToken" | "resetTokenExpiry"
+  | "id"
+  | "role"
+  | "emailVerified"
+  | "emailVerificationOtp"
+  | "emailVerificationOtpExpiry"
+  | "resetToken"
+  | "resetTokenExpiry"
 >;
 
 class User
@@ -31,6 +40,9 @@ class User
   declare lastName: string;
   declare password: string;
   declare role: UserRole;
+  declare emailVerified: boolean;
+  declare emailVerificationOtp: string | null;
+  declare emailVerificationOtpExpiry: Date | null;
   declare resetToken: string | null;
   declare resetTokenExpiry: Date | null;
   declare readonly createdAt: Date;
@@ -63,9 +75,22 @@ User.init(
       allowNull: false,
     },
     role: {
-      type: DataTypes.ENUM("admin", "manager", "employee"),
+      type: DataTypes.ENUM("admin","employee"),
       allowNull: false,
       defaultValue: "admin",
+    },
+    emailVerified: {
+      type: DataTypes.BOOLEAN,
+      allowNull: false,
+      defaultValue: false,
+    },
+    emailVerificationOtp: {
+      type: DataTypes.STRING,
+      allowNull: true,
+    },
+    emailVerificationOtpExpiry: {
+      type: DataTypes.DATE,
+      allowNull: true,
     },
     resetToken: {
       type: DataTypes.STRING,

@@ -1,5 +1,6 @@
 import sequelize from "../config/database";
 import User from "./User";
+import PendingRegistration from "./PendingRegistration";
 
 const syncDatabase = async () => {
   //Try to connect to the database using the credentials I provided and verify that the connection works.
@@ -19,4 +20,4 @@ await sequelize.sync({ alter: true });
   console.log("Database connected and synced");
 };
 
-export { sequelize, User, syncDatabase };
+export { sequelize, User, PendingRegistration, syncDatabase };
